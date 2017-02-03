@@ -55,15 +55,17 @@
 				<th>Reviews</th>
 			</tr>
 		</thead>
-		<!-- <tbody id="reviews_move" style="opacity: 0; transform: translateY(1169.36px);" class="fade_in_class"> -->
-		<tbody id="reviews_move" style="opacity: 0; transform: translateY(1169.36px);" class="">
-			<tr>
+		<!-- <tbody id="reviews_move" style="opacity: 0; transform: translateY(1169.36px);" class="fade_in_class">
+		-->
+		<tbody id="reviews_move" style="opacity: 1; transform: translateY(0);" class="">
+			<tr v-for="item in current_review_array">
 				<td>
-					<div></div>
+					<div v-html="item.review"></div>
 				</td>
 			</tr>
 		</tbody>
 	</table>
+
 </div>
 <div class="popular_list">
 	<div class="score_list_avg pBasic">
@@ -76,6 +78,8 @@
 				<div class="info">Reranked {{item.reranked_ranking}}</div>
 				<div class="info">Freq {{item.total_attraction_name_mentioned_count}}</div>
 			</div>
+			<div>{{saveReview(item.reviews, "computed", (key+1)) }}</div>
+			<div id="cate" style="display: none;">{{"computed"}}</div>
 		</span>
 	</div>
 	<div class="score_list_min pBasic">
@@ -88,6 +92,8 @@
 				<div class="info">Reranked {{item.reranked_ranking}}</div>
 				<div class="info">Freq {{item.total_attraction_name_mentioned_count}}</div>
 			</div>
+			<div>{{saveReview(item.reviews, "original", (key+1)) }}</div>
+			<div id="cate" style="display: none;">{{"original"}}</div>
 		</span>
 	</div>
 	<div class="count_list pBasic">
@@ -100,6 +106,8 @@
 				<div class="info">Original {{item.original_ranking}}</div>
 				<div class="info">Freq {{item.total_attraction_name_mentioned_count}}</div>
 			</div>
+			<div>{{saveReview(item.reviews, "reranked", (key+1)) }}</div>
+			<div id="cate" style="display: none;">{{"reranked"}}</div>
 		</span>
 	</div>
 	<div class="count_list pBasic">
@@ -112,6 +120,8 @@
 				<div class="info">Original {{item.original_ranking}}</div>
 				<div class="info">Reranked {{item.reranked_ranking}}</div>
 			</div>
+			<div>{{saveReview(item.reviews, "freq", (key+1)) }}</div>
+			<div id="cate" style="display: none;">{{"freq"}}</div>
 		</span>
 	</div>
 </div>

@@ -6,7 +6,13 @@ document.addEventListener("DOMContentLoaded", function() {
 			computed_ranking: [],
 			original_ranking: [],
 			reranked_ranking: [],
-			freq_ranking: []
+			freq_ranking: [],
+			computed_reviews_total: [],
+			original_reviews_total: [],
+			reranked_reviews_total: [],
+			freq_reviews_total: [],
+			tmp_review_array: [],
+			current_review_array: []
 		},
 		methods: {
 			popurClick: function() {
@@ -20,12 +26,60 @@ document.addEventListener("DOMContentLoaded", function() {
 					document.querySelectorAll(".detail")[i].style.height = 0;
 				}
 
-				console.log(obj);
-				console.log(obj.innerHTML);
-				dom = obj.innerHTML ? obj : obj.target;
-				console.log(dom);
+				dom = obj.innerHTML ? obj : obj.target; //這行用來檢查是不是自動點擊
 				dom.querySelector(".picked").classList += " onfocus";
 				dom.querySelector(".detail").style.height = "12vh";
+
+				pickedKey = dom.querySelector(".picked").innerHTML.split(".")[0];
+				pickedCate = dom.querySelector("#cate").innerHTML;
+				nowAt = 0;
+				rightVue.current_review_array = [];
+				switch (pickedCate) {
+					case "computed":
+						tmp_review_array = rightVue.computed_reviews_total[pickedKey].slice(0);
+						break;
+
+					case "original":
+						tmp_review_array = rightVue.original_reviews_total[pickedKey].slice(0);
+						break;
+
+					case "reranked":
+						tmp_review_array = rightVue.reranked_reviews_total[pickedKey].slice(0);
+						break;
+
+					case "freq":
+						tmp_review_array = rightVue.freq_reviews_total[pickedKey].slice(0);
+						break;
+				}
+				rightVue.autoLoad();
+			},
+			saveReview: function(res, cate, key) {
+				switch (cate) {
+					case "computed":
+						rightVue.computed_reviews_total[key] = res;
+						break;
+
+					case "original":
+						rightVue.original_reviews_total[key] = res;
+						break;
+
+					case "reranked":
+						rightVue.reranked_reviews_total[key] = res;
+						break;
+
+					case "freq":
+						rightVue.freq_reviews_total[key] = res;
+						break;
+				}
+			},
+			autoLoad: function() {
+				for (var i = nowAt; i < tmp_review_array.length; i++) {
+					rightVue.current_review_array.push(tmp_review_array[i]);
+					nowAt++;
+					if (nowAt % 10 == 0) {
+						break;
+					}
+				}
 			}
 		}
 	});
@@ -136,11 +190,10 @@ document.addEventListener("DOMContentLoaded", function() {
 				makePopularClick(document.querySelectorAll(".pBasic")[i], document.querySelectorAll(".pBasic"));
 			}
 			document.querySelectorAll(".pBasic")[0].querySelector(".title").onclick();
-/*			setTimeout(function() {
-				rightVue.pickedClick(document.querySelectorAll(".pBasic")[0].querySelector("span"));
-			}, 0);*/
+
 
 			function makePopularClick(obj, all) {
+				/* 中間的title 被點到後要展開、同時要點裡面的第一個detail */
 				obj.querySelector(".title").onclick = function() {
 					for (var i = 0; i < all.length; i++) {
 						all[i].style.height = "5.5vh";
@@ -149,6 +202,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					obj.style.height = "75vh";
 					obj.style.opacity = 1;
 
+					/* 點理面的第一個detail */
 					setTimeout(function() {
 						rightVue.pickedClick(obj.querySelector("span"));
 					}, 0);
