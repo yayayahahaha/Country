@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+<!-- 	<script type="text/javascript" src="js/function.js"></script>
+<script type="text/javascript" src="js/btn_controll.js"></script>
+<script type="text/javascript" src="js/main.js"></script> -->
+
+	<script type="text/javascript" src="js/country.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato">
+
+	<title>Yelp Dish Discovery</title>
+</head>
+<body>
+	<header class="header">
+		<div class="title"> <b>Dish Discovery from Yelp Reviews</b>
+		</div>
+		<div class="menu">
+			<button class="subtitle"- id="system_id">System</button>
+			<button class="subtitle" id="overview_id">Overview</button>
+			<!--<button class="subtitle" id="data_id">Data</button>
+		-->
+		<button class="subtitle" id="about_id">About</button>
+	</div>
+</header>
+<button class="slide_bar_btn" id="btn">More Restaurants</button>
+<div class="rest_list">
+	<table class="rest_table">
+		<thead>
+			<tr>
+				<th>Restaurants</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+</div>
+<div class="right_side">
+	<div class="review_list">
+		<table class="review_table">
+			<thead>
+				<tr>
+					<th>Reviews</th>
+				</tr>
+			</thead>
+			<tbody id="reviews_move"></tbody>
+		</table>
+	</div>
+	<div class="popular_list">
+		<div class="switch" id="switch_id">
+			<div class="euc_or_cos">
+				<span id="span_euc">Euclidean</span>
+				/
+				<span id="span_cos">Cosine</span>
+			</div>
+		</div>
+		<div class="score_list_avg">
+			<div class="title" id="score_avg_btn">Top Score (avg)</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+		</div>
+		<div class="score_list_min">
+			<div class="title" id="score_min_btn">Top Score (min)</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+		</div>
+		<div class="count_list">
+			<div class="title" id="frequent_btn">Most Frequent</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+			<div class="picked"></div>
+			<div class="detail">
+				<div class="info"></div>
+				<div class="info"></div>
+				<div class="info"></div>
+			</div>
+		</div>
+	</div>
+	<div class="draw_place"></div>
+</div>
+<!-- create the other page here -->
+<div class="subtitle_page overview" id="overview_page_id">
+	<div class="content">
+		<div class="insidepanel">
+			<h2>Abstract</h2>
+			This paper proposes a novel framework for automatic dish discovery via word
+embeddings on restaurant reviews. We collect a dataset of user reviews from
+Yelp and parse the reviews to extract dish words. Then, we utilize the
+processed reviews as training texts to learn the embedding vectors of words via
+the skip-gram model. In the paper, a nearest- neighbor like score function is
+proposed to rank the dishes based on their learned representations. We brief
+some analy- ses on the preliminary experiments and present a web-based
+visualization at
+			<a href="index.html">http://clip.csie.org/yelp/</a>
+			.
+		</div>
+		<hr>
+		<div class="insidepanel">
+			<h2>Background</h2>
+			With the growth of social media, corporations, such as Yelp, have accumulated a
+great number of user generated content (UGC). In the literature, some studies
+have been conducted with a perspective of finding critical information hidden
+in the content. While much has been proposed on accurate sentiment
+interpretation towards reviews and recommendation, little has focused on
+dish-level analysis. In this paper, therefore, we aim to provide a novel
+framework for automatic dish discovery from restaurant reviews via the
+embedding techniques. We employ regular expressions to first parse restaurant
+reviews to extract dish words, and then utilize the processed reviews as
+training texts to learn embedding vector of each word via the skip-gram model.
+In addition, a nearest-neighbor like score function is proposed to rank the
+dishes via their learned representations. Prelimi- nary experiments are
+conducted on a real-world restaurant review dataset collected from Yelp Data
+Challenge.
+		</div>
+		<hr>
+		<div class="insidepanel">
+			<h2>Dataset</h2>
+			Our preliminary experiments involve a real-world restaurant review dataset
+collected from
+			<a href="https://www.yelp.com/dataset_challenge">
+				Yelp Data
+    Challenge
+			</a>
+			.
+We first choose the top 100 restaurants containing the most reviews in the area
+of Las Vegas and then manually parse the menu of each restaurant from its
+official website. 
+Out of those 100 restaurants, we winnow out the restaurants with a complete
+menu, setting the reviews of those restaurants and their menus as our dataset.
+In summary, there are 69 restaurants and 95,578 reviews in total after the
+filtering; the number of words per review in average is about 147 and the
+vocabulary size is 46,017.
+		</div>
+	</div>
+
+</div>
+<div class="subtitle_page about" id="about_page_id">
+	<div class="content_big">
+		<h2>Team Members</h2>
+		<br>
+		<div class="about">
+			<div class="abouter">
+				<img src="image/Cychao.jpg" alt="">
+				<div class="content">
+					Chih-Yu Chao (趙之宇)
+					<br>
+					denffer18@gmail.com
+					<br>
+					<a href="http://cs.utaipei.edu.tw/bin/home.php" target=_blank>
+						Department of Computer Science
+						<br>University of Taipei</a>
+				</div>
+			</div>
+			<div class="abouter">
+				<img src="image/Chu.jpg" alt="">
+				<div class="content">
+					Yi-Fan Chu (曲奕帆)
+					<br>
+					tom8u4286@gmail.com
+					<br>
+					<a href="http://cs.utaipei.edu.tw/bin/home.php" target=_blank>
+						Department of Computer Science
+						<br>University of Taipei</a>
+				</div>
+			</div>
+			<div class="abouter">
+				<img src="image/YiHo.jpg" alt="">
+				<div class="content">
+					Yi Ho (何怡)
+					<br>
+					koibadkid@gmail.com
+					<br>
+					<a href="http://www.esoe.ntu.edu.tw/main.php" target=_blank>
+						Department of Engineering Science and Ocean Engineering
+						<br>National Taiwan University</a>
+				</div>
+			</div>
+			<div class="abouter">
+				<img src="image/FC.jpg" alt="">
+				<div class="content">
+					FC (飛膝)
+					<br>
+					yayayahahahaooii@gmail.com
+					<br>
+					<a href="http://cs.utaipei.edu.tw/bin/home.php" target=_blank>
+						Department of Computer Science
+						<br>University of Taipei</a>
+				</div>
+			</div>
+			<div class="abouter">
+				<img src="image/wang.png" alt="">
+				<div class="content">
+					<a href="http://teacher.utaipei.edu.tw/~cjwang/" target=_blank>Chuan-Ju Wang (王釧茹)</a>
+					<br>
+					cjwang@citi.sinica.edu.tw
+					<br>
+					Assistant Research Fellow
+					<br>
+					<a href="http://www.citi.sinica.edu.tw" target=_blank>
+						Research Center for Information Technology Innovation
+						<br>Academia Sinica</a>
+				</div>
+			</div>
+			<div class="abouter">
+				<img src="image/tsai.png" alt="">
+				<div class="content">
+					<a href="http://www.cs.nccu.edu.tw/~mftsai/" target=_blank>Ming-Feng Tsai (蔡銘峰)</a>
+					<br>
+					mftsai@nccu.edu.tw
+					<br>
+					Assistant Professor
+					<br>
+					<a href="http://www.cs.nccu.edu.tw/html/01/01_news.php" target=_blank>
+						Department of Computer Science
+						<br>National Chengchi University</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
