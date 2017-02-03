@@ -68,45 +68,49 @@
 <div class="popular_list">
 	<div class="score_list_avg pBasic">
 		<div class="title" id="score_avg_btn">Computed</div>
-		<span v-for="item in computed_ranking">
-			<div class="picked">{{item.attraction_name}}</div>
+		<span v-for="(item, key) in computed_ranking" @click="pickedClick" style="cursor: pointer;" >
+			<div class="picked" style="pointer-events: none;" >{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
-				<div class="info"></div>
-				<div class="info"></div>
-				<div class="info"></div>
+				<div class="info" style="color: red;">Computed {{item.computed_ranking}}</div>
+				<div class="info">Original {{item.original_ranking}}</div>
+				<div class="info">Reranked {{item.reranked_ranking}}</div>
+				<div class="info">Freq {{item.total_attraction_name_mentioned_count}}</div>
 			</div>
 		</span>
 	</div>
 	<div class="score_list_min pBasic">
 		<div class="title" id="score_min_btn">Original</div>
-		<span v-for="item in original_ranking">
-			<div class="picked">{{item.attraction_name}}</div>
+		<span v-for="(item, key) in original_ranking" @click="pickedClick" style="cursor: pointer;" >
+			<div class="picked" style="pointer-events: none;" >{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
-				<div class="info"></div>
-				<div class="info"></div>
-				<div class="info"></div>
+				<div class="info" style="color: red;">Original {{item.original_ranking}}</div>
+				<div class="info">Computed {{item.computed_ranking}}</div>
+				<div class="info">Reranked {{item.reranked_ranking}}</div>
+				<div class="info">Freq {{item.total_attraction_name_mentioned_count}}</div>
 			</div>
 		</span>
 	</div>
 	<div class="count_list pBasic">
 		<div class="title" id="frequent_btn">Reranked</div>
-		<span v-for="item in reranked_ranking">
-			<div class="picked">{{item.attraction_name}}</div>
+		<span v-for="(item, key) in reranked_ranking" @click="pickedClick" style="cursor: pointer;" >
+			<div class="picked" style="pointer-events: none;" >{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
-				<div class="info"></div>
-				<div class="info"></div>
-				<div class="info"></div>
+				<div class="info" style="color: red;">Reranked {{item.reranked_ranking}}</div>
+				<div class="info">Computed {{item.computed_ranking}}</div>
+				<div class="info">Original {{item.original_ranking}}</div>
+				<div class="info">Freq {{item.total_attraction_name_mentioned_count}}</div>
 			</div>
 		</span>
 	</div>
 	<div class="count_list pBasic">
 		<div class="title" id="frequent_btn">Freq</div>
-		<span v-for="item in freq_ranking">
-			<div class="picked">{{item.attraction_name}}</div>
+		<span v-for="(item, key) in freq_ranking" @click="pickedClick" style="cursor: pointer;" >
+			<div class="picked" style="pointer-events: none;" >{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
-				<div class="info"></div>
-				<div class="info"></div>
-				<div class="info"></div>
+				<div class="info" style="color:red;">Freq {{item.total_attraction_name_mentioned_count}}</div>
+				<div class="info">Computed {{item.computed_ranking}}</div>
+				<div class="info">Original {{item.original_ranking}}</div>
+				<div class="info">Reranked {{item.reranked_ranking}}</div>
 			</div>
 		</span>
 	</div>
