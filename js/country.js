@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						break;
 				}
 				rightVue.autoLoad();
+				$("#reviews_move").scrollTop(0);
 			},
 			saveReview: function(res, cate, key) {
 				switch (cate) {
@@ -73,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 			},
 			autoLoad: function() {
+				/* 底下if 裡的數字為一次載入的筆數 */
 				for (var i = nowAt; i < tmp_review_array.length; i++) {
 					rightVue.current_review_array.push(tmp_review_array[i]);
 					nowAt++;
@@ -247,4 +249,11 @@ document.addEventListener("DOMContentLoaded", function() {
 			document.querySelector(".rest_list").style.left = "-20vw";
 		}
 	}
+
+	/* review 捲動到底時的auto load, 一次10筆 */
+	$("#reviews_move").scroll(function(event) {
+		if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+			rightVue.autoLoad();
+		}
+	});
 });
