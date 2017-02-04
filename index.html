@@ -127,7 +127,17 @@
 </div>
 <div class="draw_place">
 	<svg :width="svg_width" :height="svg_height" >
+		<!-- 座標軸 -->
 		<path :d="svg_axis_element" stroke="#333" stroke-width="1"></path>
+
+		<!-- 情緒字 -->
+		<g v-for="emo in svg_emo_array">
+			<circle :cx="emo.afterV[0]" :cy="emo.afterV[1]" r="6" fill="transparent" stroke="rgba(84,153,199,0.8)" stroke-width="0"></circle>
+			<g>
+				<path :d="emo.cross" stroke="rgba(84,153,199,0.8)" stroke-width="1"></path>
+				<text :x="emo.afterV[0]" :y="emo.afterV[1]" fill="rgba(84,153,199,0.8)">{{emo.stemmed_word}}</text>
+			</g>
+		</g>
 	</svg>
 </div>
 </div>

@@ -15,7 +15,8 @@ document.addEventListener("DOMContentLoaded", function() {
 			svg_width: parseInt(document.querySelector(".draw_place").offsetWidth) * 0.9,
 			svg_height: parseInt(document.querySelector(".draw_place").offsetHeight) * 0.9,
 			svg_prepare: 0,
-			svg_axis_element: ""
+			svg_axis_element: "",
+			svg_emo_array: []
 		},
 		watch: {
 			svg_width: function() {
@@ -99,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				/* 如果被呼叫了兩次、也就是情緒字讀取完畢和挑出來的景點排序完畢後開始畫 */
 				rightVue.svg_prepare++;
 				if (rightVue.svg_prepare == 2 || resize == "resize") {
+					/* 座標軸 */
 					svg_axis = [
 						[rightVue.svg_width / 2, 0],
 						[rightVue.svg_width, rightVue.svg_height / 2],
@@ -106,6 +108,14 @@ document.addEventListener("DOMContentLoaded", function() {
 						[0, rightVue.svg_height / 2]
 					];
 					rightVue.svg_axis_element = "M" + svg_axis[0][0] + " " + svg_axis[0][1] + "L" + svg_axis[2][0] + " " + svg_axis[2][1] + "M" + svg_axis[3][0] + " " + svg_axis[3][1] + " L" + svg_axis[1][0] + " " + svg_axis[1][1];
+
+					/* 情緒字 */
+					for (var i = 0; i < rightVue.svg_emo_array.length; i++) {
+						rightVue.svg_emo_array[i].afterV[0] = (rightVue.svg_emo_array[i].vector2[0] * (rightVue.svg_width / 2) / 100) + (rightVue.svg_width / 2);
+						rightVue.svg_emo_array[i].afterV[1] = (rightVue.svg_emo_array[i].vector2[1] * (rightVue.svg_height / 2) / 100) + (rightVue.svg_height / 2);
+					}
+
+
 				}
 			}
 		}
@@ -173,6 +183,16 @@ document.addEventListener("DOMContentLoaded", function() {
 						url: 'data/lexicon/' + countryName + ".json",
 					})
 					.done(function(res) {
+						/* 情緒字 */
+						for (var i = 0; i < res.length; i++) {
+							res[i].afterV = [];
+							res[i].afterV[0] = (res[i].vector2[0] * (rightVue.svg_width / 2) / 100) + (rightVue.svg_width / 2);
+							res[i].afterV[1] = (res[i].vector2[1] * (rightVue.svg_height / 2) / 100) + (rightVue.svg_height / 2);
+
+							s = 5;
+							res[i].cross = "M"+res[i].afterV[0]+" "+(res[i].afterV[1]-s)+" L"+res[i].afterV[0]+" "+(res[i].afterV[1]+s)+"M"+(res[i].afterV[0]-s)+" "+res[i].afterV[1]+"L"+(res[i].afterV[0]+s)+" "+res[i].afterV[1]+"";
+						}
+						rightVue.svg_emo_array = res;
 						rightVue.svg_size_change();
 					})
 					.fail(function(res) {});
