@@ -125,7 +125,11 @@
 		</span>
 	</div>
 </div>
-<div class="draw_place"></div>
+<div class="draw_place">
+	<svg :width="svg_width" :height="svg_height" >
+		<path :d="svg_axis_element" stroke="#333" stroke-width="1"></path>
+	</svg>
+</div>
 </div>
 <!-- create the other page here -->
 <div class="subtitle_page overview" id="overview_page_id">

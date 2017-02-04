@@ -11,8 +11,19 @@ document.addEventListener("DOMContentLoaded", function() {
 			original_reviews_total: [],
 			reranked_reviews_total: [],
 			freq_reviews_total: [],
-			tmp_review_array: [],
-			current_review_array: []
+			current_review_array: [],
+			svg_width: parseInt(document.querySelector(".draw_place").offsetWidth) * 0.9,
+			svg_height: parseInt(document.querySelector(".draw_place").offsetHeight) * 0.9,
+			svg_prepare: 0,
+			svg_axis_element: ""
+		},
+		watch: {
+			svg_width: function() {
+				rightVue.svg_size_change();
+			},
+			svg_height: function() {
+				rightVue.svg_size_change();
+			}
 		},
 		methods: {
 			popurClick: function() {
@@ -83,6 +94,19 @@ document.addEventListener("DOMContentLoaded", function() {
 						break;
 					}
 				}
+			},
+			svg_size_change: function(resize) {
+				/* 如果被呼叫了兩次、也就是情緒字讀取完畢和挑出來的景點排序完畢後開始畫 */
+				rightVue.svg_prepare++;
+				if (rightVue.svg_prepare == 2 || resize == "resize") {
+					svg_axis = [
+						[rightVue.svg_width / 2, 0],
+						[rightVue.svg_width, rightVue.svg_height / 2],
+						[rightVue.svg_width / 2, rightVue.svg_height],
+						[0, rightVue.svg_height / 2]
+					];
+					rightVue.svg_axis_element = "M" + svg_axis[0][0] + " " + svg_axis[0][1] + "L" + svg_axis[2][0] + " " + svg_axis[2][1] + "M" + svg_axis[3][0] + " " + svg_axis[3][1] + " L" + svg_axis[1][0] + " " + svg_axis[1][1];
+				}
 			}
 		}
 	});
@@ -98,6 +122,9 @@ document.addEventListener("DOMContentLoaded", function() {
 			counClick: function(obj) {
 				/* 這行用來關閉左邊的toggle */
 				document.all.btn.onclick();
+
+				/* 用來重畫svg */
+				rightVue.svg_prepare = 0;
 
 				countAjax = 0;
 				countryReviewList = [];
@@ -140,6 +167,17 @@ document.addEventListener("DOMContentLoaded", function() {
 					}
 				}
 
+				/* 取得國家的情緒字 */
+				rightVue.getCountryEmotionDone = false;
+				$.ajax({
+						url: 'data/lexicon/' + countryName + ".json",
+					})
+					.done(function(res) {
+						rightVue.svg_size_change();
+					})
+					.fail(function(res) {});
+
+
 			}
 		}
 	});
@@ -159,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	function countryAjaxCount(res) {
 		countAjax++;
-		console.clear();
+		// console.clear();
 		console.log(countAjax);
 
 		countryReviewList.push(res);
@@ -221,8 +259,11 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 			}
 
+			/* 點擊第一個popular list 的 title, 也就是Computed */
 			document.querySelectorAll(".pBasic")[0].querySelector(".title").onclick();
 
+			/* 開始畫svg */
+			rightVue.svg_size_change();
 		}
 	}
 
@@ -269,4 +310,10 @@ document.addEventListener("DOMContentLoaded", function() {
 			rightVue.autoLoad();
 		}
 	});
+});
+
+window.addEventListener("resize", function() {
+	rightVue.svg_width = parseInt(document.querySelector(".draw_place").offsetWidth) * 0.9;
+	rightVue.svg_height = parseInt(document.querySelector(".draw_place").offsetHeight) * 0.9;
+	rightVue.svg_size_change("resize");
 });
