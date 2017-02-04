@@ -27,11 +27,12 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 
 				dom = obj.innerHTML ? obj : obj.target; //這行用來檢查是不是自動點擊
-				dom.querySelector(".picked").classList += " onfocus";
-				dom.querySelector(".detail").style.height = "12vh";
+				// console.log(dom);
+				$(dom).next()[0].style.height = "12vh";
+				dom.classList += " onfocus";
 
-				pickedKey = dom.querySelector(".picked").innerHTML.split(".")[0];
-				pickedCate = dom.querySelector("#cate").innerHTML;
+				pickedKey = dom.innerHTML.split(".")[0];
+				pickedCate = $(dom).next().next()[0].innerHTML;
 				nowAt = 0;
 				rightVue.current_review_array = [];
 				switch (pickedCate) {
@@ -110,8 +111,20 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 				try {
 					$(event.target)[0].setAttribute("class", "cBasic onfocus");
-					var countryName = ($(event.target)[0].innerHTML).split(".")[1].split(",")[0].trim().split(" ").join("_");
+					console.log($(event.target)[0].innerHTML);
+					var tmpName = $(event.target)[0].innerHTML.split(",")[0];
+					tmpArray = [];
+					if (tmpName.split(".").length > 2) {
+						for (var i = 1; i < tmpName.split(".").length; i++) {
+							tmpArray.push(tmpName.split(".")[i].trim());
+						}
+						tmpName = tmpArray.join("_");
+						var countryName = tmpName;
+					} else {
+						var countryName = ($(event.target)[0].innerHTML).split(".")[1].split(",")[0].trim().split(" ").join("_");
+					}
 					console.log(countryName);
+
 
 				} catch (e) {
 					obj.setAttribute("class", "cBasic onfocus");
@@ -126,7 +139,6 @@ document.addEventListener("DOMContentLoaded", function() {
 						countryCallAjax('/data/frontend_reviews/' + countryName + '/' + countryName + '_' + i + '.json');
 					}
 				}
-
 
 			}
 		}
@@ -191,8 +203,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			for (var i = 0; i < document.querySelectorAll(".pBasic").length; i++) {
 				makePopularClick(document.querySelectorAll(".pBasic")[i], document.querySelectorAll(".pBasic"));
 			}
-			document.querySelectorAll(".pBasic")[0].querySelector(".title").onclick();
-
 
 			function makePopularClick(obj, all) {
 				/* 中間的title 被點到後要展開、同時要點裡面的第一個detail */
@@ -206,10 +216,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 					/* 點理面的第一個detail */
 					setTimeout(function() {
-						rightVue.pickedClick(obj.querySelector("span"));
+						rightVue.pickedClick(obj.querySelector(".picked"));
 					}, 0);
 				}
 			}
+
+			document.querySelectorAll(".pBasic")[0].querySelector(".title").onclick();
+
 		}
 	}
 

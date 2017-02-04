@@ -71,57 +71,57 @@
 	<div class="score_list_avg pBasic">
 		<div class="title" id="score_avg_btn">Computed</div>
 		<span v-for="(item, key) in computed_ranking" @click="pickedClick" style="cursor: pointer;" >
-			<div class="picked" style="pointer-events: none;" >{{(key+1)}}.  {{item.attraction_name}}</div>
+			<div class="picked" >{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
 				<div class="info" style="color: red;">Computed: {{item.computed_ranking}}</div>
 				<div class="info">Original: {{item.original_ranking}}</div>
 				<div class="info">Reranked: {{item.reranked_ranking}}</div>
 				<div class="info">Freq: {{item.total_attraction_name_mentioned_count}}</div>
 			</div>
-			<div>{{saveReview(item.reviews, "computed", (key+1)) }}</div>
 			<div id="cate" style="display: none;">{{"computed"}}</div>
+			<div>{{saveReview(item.reviews, "computed", (key+1)) }}</div>
 		</span>
 	</div>
 	<div class="score_list_min pBasic">
 		<div class="title" id="score_min_btn">Original</div>
 		<span v-for="(item, key) in original_ranking" @click="pickedClick" style="cursor: pointer;" >
-			<div class="picked" style="pointer-events: none;" >{{(key+1)}}.  {{item.attraction_name}}</div>
+			<div class="picked" >{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
 				<div class="info" style="color: red;">Original: {{item.original_ranking}}</div>
 				<div class="info">Computed: {{item.computed_ranking}}</div>
 				<div class="info">Reranked: {{item.reranked_ranking}}</div>
 				<div class="info">Freq: {{item.total_attraction_name_mentioned_count}}</div>
 			</div>
-			<div>{{saveReview(item.reviews, "original", (key+1)) }}</div>
 			<div id="cate" style="display: none;">{{"original"}}</div>
+			<div>{{saveReview(item.reviews, "original", (key+1)) }}</div>
 		</span>
 	</div>
 	<div class="count_list pBasic">
 		<div class="title" id="frequent_btn">Reranked</div>
 		<span v-for="(item, key) in reranked_ranking" @click="pickedClick" style="cursor: pointer;" >
-			<div class="picked" style="pointer-events: none;" >{{(key+1)}}.  {{item.attraction_name}}</div>
+			<div class="picked" >{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
 				<div class="info" style="color: red;">Reranked: {{item.reranked_ranking}}</div>
 				<div class="info">Computed: {{item.computed_ranking}}</div>
 				<div class="info">Original: {{item.original_ranking}}</div>
 				<div class="info">Freq: {{item.total_attraction_name_mentioned_count}}</div>
 			</div>
-			<div>{{saveReview(item.reviews, "reranked", (key+1)) }}</div>
 			<div id="cate" style="display: none;">{{"reranked"}}</div>
+			<div>{{saveReview(item.reviews, "reranked", (key+1)) }}</div>
 		</span>
 	</div>
 	<div class="count_list pBasic">
 		<div class="title" id="frequent_btn">Freq</div>
 		<span v-for="(item, key) in freq_ranking" @click="pickedClick" style="cursor: pointer;" >
-			<div class="picked" style="pointer-events: none;" >{{(key+1)}}.  {{item.attraction_name}}</div>
+			<div class="picked" >{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
 				<div class="info" style="color: red;">Freq: {{item.total_attraction_name_mentioned_count}}</div>
 				<div class="info">Computed: {{item.computed_ranking}}</div>
 				<div class="info">Original: {{item.original_ranking}}</div>
 				<div class="info">Reranked: {{item.reranked_ranking}}</div>
 			</div>
-			<div>{{saveReview(item.reviews, "freq", (key+1)) }}</div>
 			<div id="cate" style="display: none;">{{"freq"}}</div>
+			<div>{{saveReview(item.reviews, "freq", (key+1)) }}</div>
 		</span>
 	</div>
 </div>
