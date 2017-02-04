@@ -70,8 +70,8 @@
 <div class="popular_list">
 	<div class="score_list_avg pBasic">
 		<div class="title" id="score_avg_btn">Computed</div>
-		<span v-for="(item, key) in computed_ranking" @click="pickedClick" style="cursor: pointer;" >
-			<div class="picked" >{{(key+1)}}.  {{item.attraction_name}}</div>
+		<span v-for="(item, key) in computed_ranking">
+			<div class="picked">{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
 				<div class="info" style="color: red;">Computed: {{item.computed_ranking}}</div>
 				<div class="info">Original: {{item.original_ranking}}</div>
@@ -84,8 +84,8 @@
 	</div>
 	<div class="score_list_min pBasic">
 		<div class="title" id="score_min_btn">Original</div>
-		<span v-for="(item, key) in original_ranking" @click="pickedClick" style="cursor: pointer;" >
-			<div class="picked" >{{(key+1)}}.  {{item.attraction_name}}</div>
+		<span v-for="(item, key) in original_ranking">
+			<div class="picked">{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
 				<div class="info" style="color: red;">Original: {{item.original_ranking}}</div>
 				<div class="info">Computed: {{item.computed_ranking}}</div>
@@ -98,8 +98,8 @@
 	</div>
 	<div class="count_list pBasic">
 		<div class="title" id="frequent_btn">Reranked</div>
-		<span v-for="(item, key) in reranked_ranking" @click="pickedClick" style="cursor: pointer;" >
-			<div class="picked" >{{(key+1)}}.  {{item.attraction_name}}</div>
+		<span v-for="(item, key) in reranked_ranking">
+			<div class="picked">{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
 				<div class="info" style="color: red;">Reranked: {{item.reranked_ranking}}</div>
 				<div class="info">Computed: {{item.computed_ranking}}</div>
@@ -112,8 +112,8 @@
 	</div>
 	<div class="count_list pBasic">
 		<div class="title" id="frequent_btn">Freq</div>
-		<span v-for="(item, key) in freq_ranking" @click="pickedClick" style="cursor: pointer;" >
-			<div class="picked" >{{(key+1)}}.  {{item.attraction_name}}</div>
+		<span v-for="(item, key) in freq_ranking">
+			<div class="picked">{{(key+1)}}.  {{item.attraction_name}}</div>
 			<div class="detail">
 				<div class="info" style="color: red;">Freq: {{item.total_attraction_name_mentioned_count}}</div>
 				<div class="info">Computed: {{item.computed_ranking}}</div>
@@ -150,13 +150,13 @@
 		<circle :cx="item.afterV[0]" :cy="item.afterV[1]" :r="(item.radius+1) * 20" fill="rgba(22,160,133,0.8)" stroke="rgba(0,0,0,0.4)" stroke-width="1" class="dishes_hover" v-for="item in freq_ranking" ></circle>
 
 		<!-- computed -->
-		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(153,2,22,0.8)" class="text_class" style="opacity: 1;" v-for="item in computed_ranking">Smoked Salmon</text>
+		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(153,2,22,0.8)" class="text_class" style="opacity: 0;" v-for="item in computed_ranking">{{item.attraction_name}}</text>
 		<!-- origin -->
-		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(247,220,111,0.8)" class="text_class" style="opacity: 1;" v-for="item in original_ranking">Smoked Salmon</text>
+		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(247,220,111,0.8)" class="text_class" style="opacity: 0;" v-for="item in original_ranking">{{item.attraction_name}}</text>
 		<!-- reranked -->
-		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(236,112,99,0.8)" class="text_class" style="opacity: 1;" v-for="item in reranked_ranking">Smoked Salmon</text>
+		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(236,112,99,0.8)" class="text_class" style="opacity: 0;" v-for="item in reranked_ranking">{{item.attraction_name}}</text>
 		<!-- freq -->
-		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(22,160,133,0.8)" class="text_class" style="opacity: 1;" v-for="item in freq_ranking">Smoked Salmon</text>
+		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(22,160,133,0.8)" class="text_class" style="opacity: 0;" v-for="item in freq_ranking">{{item.attraction_name}}</text>
 
 		<g>
 			<text :x="svg_title.x" :y="svg_title.y" fill="#E74C3C" font-size="1.5em" font-weight="bold">{{svg_title.title}}</text>

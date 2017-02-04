@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				cross: {
 					x: null,
 					y: null,
-					path:""
+					path: ""
 				}
 			}
 		},
@@ -59,41 +59,6 @@ document.addEventListener("DOMContentLoaded", function() {
 				$(event.target)[0].style.height = "300px";
 				$(event.target)[0].style.opacity = 1;
 				console.log($(event));
-			},
-			pickedClick: function(obj) {
-				for (var i = 0; i < document.querySelectorAll(".picked").length; i++) {
-					document.querySelectorAll(".picked")[i].classList = "picked";
-					document.querySelectorAll(".detail")[i].style.height = 0;
-				}
-
-				dom = obj.innerHTML ? obj : obj.target; //這行用來檢查是不是自動點擊
-				// console.log(dom);
-				$(dom).next()[0].style.height = "12vh";
-				dom.classList += " onfocus";
-
-				pickedKey = dom.innerHTML.split(".")[0];
-				pickedCate = $(dom).next().next()[0].innerHTML;
-				nowAt = 0;
-				rightVue.current_review_array = [];
-				switch (pickedCate) {
-					case "computed":
-						tmp_review_array = rightVue.computed_reviews_total[pickedKey].slice(0);
-						break;
-
-					case "original":
-						tmp_review_array = rightVue.original_reviews_total[pickedKey].slice(0);
-						break;
-
-					case "reranked":
-						tmp_review_array = rightVue.reranked_reviews_total[pickedKey].slice(0);
-						break;
-
-					case "freq":
-						tmp_review_array = rightVue.freq_reviews_total[pickedKey].slice(0);
-						break;
-				}
-				rightVue.autoLoad();
-				$("#reviews_move").scrollTop(0);
 			},
 			saveReview: function(res, cate, key) {
 				switch (cate) {
@@ -218,7 +183,58 @@ document.addEventListener("DOMContentLoaded", function() {
 					crossC = {};
 					crossC.x = rightVue.svg_icon.cross.x - 7;
 					crossC.y = rightVue.svg_icon.cross.y - 5;
-					rightVue.svg_icon.cross.path = "M"+crossC.x+" "+(crossC.y-s)+" L"+crossC.x+" "+(crossC.y+s)+"M"+(crossC.x-s)+" "+crossC.y+"L"+(crossC.x+s)+" "+crossC.y;
+					rightVue.svg_icon.cross.path = "M" + crossC.x + " " + (crossC.y - s) + " L" + crossC.x + " " + (crossC.y + s) + "M" + (crossC.x - s) + " " + crossC.y + "L" + (crossC.x + s) + " " + crossC.y;
+
+
+					/* svg 上的點的click 和hover 響應等 */
+					setTimeout(function() {
+						circleList = document.querySelectorAll(".dishes_hover");
+						nameList = document.querySelectorAll(".text_class");
+						for (var i = 0; i < circleList.length; i++) {
+							makeCircleEvent(circleList[i], i);
+						}
+
+						function makeCircleEvent(obj, number) {
+							obj.onclick = function() {
+								for (var i = 0; i < nameList.length; i++) {
+									nameList[i].style.opacity = 0;
+									circleList[i].style.stroke = "rgba(0,0,0,0.4)";
+									circleList[i].style.strokeWidth = 1;
+								}
+								nameList[number].style.opacity = 1;
+								circleList[number].style.stroke = "red";
+								circleList[number].style.strokeWidth = 3;
+
+								for (var i = 0; i < document.querySelectorAll(".pBasic").length; i++) {
+									document.querySelectorAll(".pBasic")[i].style.height = "5.5vh";
+								}
+								if (number <= 4) {
+									document.querySelectorAll(".pBasic")[0].style.height = "75vh";
+								} else if (number >= 5 && number <= 9) {
+									document.querySelectorAll(".pBasic")[1].style.height = "75vh";
+								} else if (number >= 10 && number <= 14) {
+									document.querySelectorAll(".pBasic")[2].style.height = "75vh";
+								} else {
+									document.querySelectorAll(".pBasic")[3].style.height = "75vh";
+								}
+
+								document.querySelectorAll(".picked")[number].onclick();
+							}
+							obj.onmouseover = function() {
+								nameList[number].style.opacity = 1;
+								circleList[number].style.stroke = "red";
+								circleList[number].style.strokeWidth = 3;
+							}
+							obj.onmouseout = function() {
+								if (number != nowWho) {
+									nameList[number].style.opacity = 0;
+									circleList[number].style.stroke = "rgba(0,0,0,0.4)";
+									circleList[number].style.strokeWidth = 1;
+								}
+							}
+						}
+						circleList[0].onclick();
+					}, 0);
 
 				}
 			}
@@ -369,14 +385,89 @@ document.addEventListener("DOMContentLoaded", function() {
 				obj.querySelector(".title").onclick = function() {
 					for (var i = 0; i < all.length; i++) {
 						all[i].style.height = "5.5vh";
-						obj.style.opacity = 1;
 					}
 					obj.style.height = "75vh";
 					obj.style.opacity = 1;
 
-					/* 點理面的第一個detail */
 					setTimeout(function() {
-						rightVue.pickedClick(obj.querySelector(".picked"));
+						pickeds = document.querySelectorAll(".picked");
+						for (var i = 0; i < pickeds.length; i++) {
+							makePickedClick(pickeds[i], i);
+						}
+
+						function makePickedClick(obj, number) {
+							obj.onclick = function() {
+								nowWho = number;
+								/* 消除其他的樣式 */
+								for (var i = 0; i < document.querySelectorAll(".picked").length; i++) {
+									document.querySelectorAll(".picked")[i].classList = "picked";
+									document.querySelectorAll(".detail")[i].style.height = 0;
+								}
+
+								/* 消除其他circle 的樣式 */
+								try {
+									for (var i = 0; i < nameList.length; i++) {
+										nameList[i].style.opacity = 0;
+										circleList[i].style.stroke = "rgba(0,0,0,0.4)";
+										circleList[i].style.strokeWidth = 1;
+									}
+
+									/* 幫被點到的circle 加上樣式*/
+									nameList[number].style.opacity = 1;
+									circleList[number].style.stroke = "red";
+									circleList[number].style.strokeWidth = 3;
+								} catch (e) {
+
+								}
+
+
+
+								dom = obj.innerHTML ? obj : obj.target; //這行用來檢查是不是自動點擊
+
+								/* 幫被點到的景點加上樣式 */
+								$(dom).next()[0].style.height = "12vh";
+								dom.classList += " onfocus";
+
+								pickedKey = dom.innerHTML.split(".")[0];
+								pickedCate = $(dom).next().next()[0].innerHTML;
+								nowAt = 0;
+								rightVue.current_review_array = [];
+								switch (pickedCate) {
+									case "computed":
+										tmp_review_array = rightVue.computed_reviews_total[pickedKey].slice(0);
+										break;
+
+									case "original":
+										tmp_review_array = rightVue.original_reviews_total[pickedKey].slice(0);
+										break;
+
+									case "reranked":
+										tmp_review_array = rightVue.reranked_reviews_total[pickedKey].slice(0);
+										break;
+
+									case "freq":
+										tmp_review_array = rightVue.freq_reviews_total[pickedKey].slice(0);
+										break;
+								}
+								rightVue.autoLoad();
+								$("#reviews_move").scrollTop(0);
+							}
+							obj.onmouseover = function() {
+								nameList[number].style.opacity = 1;
+								circleList[number].style.stroke = "red";
+								circleList[number].style.strokeWidth = 3;
+							}
+							obj.onmouseout = function() {
+								if (number != nowWho) {
+									nameList[number].style.opacity = 0;
+									circleList[number].style.stroke = "rgba(0,0,0,0.4)";
+									circleList[number].style.strokeWidth = 1;
+								}
+							}
+
+						}
+						/* 點擊被點到的國家的Computed的第一個景點 */
+						obj.querySelector(".picked").onclick();
 					}, 0);
 				}
 			}
