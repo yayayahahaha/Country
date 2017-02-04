@@ -44,7 +44,9 @@ document.addEventListener("DOMContentLoaded", function() {
 					y: null,
 					path: ""
 				}
-			}
+			},
+			loading_cover: true,
+			loading_process: 0
 		},
 		watch: {
 			svg_width: function() {
@@ -219,6 +221,7 @@ document.addEventListener("DOMContentLoaded", function() {
 								}
 
 								document.querySelectorAll(".picked")[number].onclick();
+
 							}
 							obj.onmouseover = function() {
 								nameList[number].style.opacity = 1;
@@ -233,6 +236,7 @@ document.addEventListener("DOMContentLoaded", function() {
 								}
 							}
 						}
+						/* 點擊第一個點 */
 						circleList[0].onclick();
 					}, 0);
 
@@ -250,6 +254,32 @@ document.addEventListener("DOMContentLoaded", function() {
 		},
 		methods: {
 			counClick: function(obj) {
+				/* 顯示loading cover */
+				firstClick = 0;
+				$("#reviews_move").animate({
+					opacity: 0
+				}, 400, function() {
+					$("#reviews_move")[0].style.transform = "translateY(100vh)";
+				});
+				$("svg").animate({
+					opacity: 0
+				}, 400);
+				try {
+					for (var i = 0; i < document.querySelectorAll(".detail").length; i++) {
+						document.querySelectorAll(".detail")[i].style.height = 0;
+					}
+					for (var i = 0; i < document.querySelectorAll(".pBasic").length; i++) {
+						document.querySelectorAll(".pBasic")[i].style.height = "5.5vh";
+					}
+				} catch (e) {
+					console.log(e);
+				}
+
+				setTimeout(function() {
+					$(".loading_cover").fadeIn();
+				}, 400);
+
+
 				/* 這行用來關閉左邊的toggle */
 				document.all.btn.onclick();
 
@@ -268,7 +298,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 				try {
 					$(event.target)[0].setAttribute("class", "cBasic onfocus");
-					console.log($(event.target)[0].innerHTML);
+					// console.log($(event.target)[0].innerHTML);
 					var tmpName = $(event.target)[0].innerHTML.split(",")[0];
 					tmpArray = [];
 					if (tmpName.split(".").length > 2) {
@@ -280,14 +310,14 @@ document.addEventListener("DOMContentLoaded", function() {
 					} else {
 						countryName = ($(event.target)[0].innerHTML).split(".")[1].split(",")[0].trim().split(" ").join("_");
 					}
-					console.log(countryName);
+					// console.log(countryName);
 
 
 				} catch (e) {
 					obj.setAttribute("class", "cBasic onfocus");
 
 					countryName = (obj.innerHTML).split(".")[1].split(",")[0].trim().split(" ").join("_");
-					console.log(countryName);
+					// console.log(countryName);
 				}
 				for (var i = 1; i <= 20; i++) {
 					if (i <= 9) {
@@ -332,12 +362,14 @@ document.addEventListener("DOMContentLoaded", function() {
 	function countryAjaxCount(res) {
 		countAjax++;
 		// console.clear();
-		console.log(countAjax);
+		rightVue.loading_process = Math.floor((countAjax / 20) * 100);
+		// console.log(countAjax);
 
 		countryReviewList.push(res);
 		/* 讀到被點到的國家的20個景點後，要生成popular list */
 		if (countAjax == 20) {
-			console.log("done!");
+			$(".loading_cover").fadeOut();
+			// console.log("done!");
 			countryReviewList = countryReviewList.sort(function(a, b) {
 				return a["computed_ranking"] - b["computed_ranking"];
 			});
@@ -374,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			}
 			rightVue.freq_ranking = freq_ranking;
 
-			console.log("sort done");
+			// console.log("sort done");
 
 			for (var i = 0; i < document.querySelectorAll(".pBasic").length; i++) {
 				makePopularClick(document.querySelectorAll(".pBasic")[i], document.querySelectorAll(".pBasic"));
@@ -451,6 +483,19 @@ document.addEventListener("DOMContentLoaded", function() {
 								}
 								rightVue.autoLoad();
 								$("#reviews_move").scrollTop(0);
+
+								/* 結束loading */
+								firstClick++;
+								if (firstClick == 2) {
+									/* load cover */
+									$("#reviews_move").animate({
+										opacity: 1
+									}, 400);
+									$("#reviews_move")[0].style.transform = "translateY(0)";
+									$("svg").animate({
+										opacity: 1
+									}, 400);
+								}
 							}
 							obj.onmouseover = function() {
 								nameList[number].style.opacity = 1;
@@ -511,9 +556,13 @@ document.addEventListener("DOMContentLoaded", function() {
 		if (btnToggle) {
 			btnToggle = false;
 			document.querySelector(".rest_list").style.left = "0px";
+			document.querySelector(".right_side").style.opacity = 0.2;
+			document.querySelector(".right_side").style.pointerEvents = "none";
 		} else {
 			btnToggle = true;
 			document.querySelector(".rest_list").style.left = "-20vw";
+			document.querySelector(".right_side").style.opacity = 1;
+			document.querySelector(".right_side").style.pointerEvents = "auto";
 		}
 	}
 
@@ -523,6 +572,30 @@ document.addEventListener("DOMContentLoaded", function() {
 			rightVue.autoLoad();
 		}
 	});
+
+	/* 標頭按鈕事件 */
+	$("#system_id")[0].onclick = function() {
+		$("#overview_page_id")[0].style.opacity = 0;
+		$("#overview_page_id")[0].style.zIndex = -1;
+
+		$("#about_page_id")[0].style.opacity = 0;
+		$("#about_page_id")[0].style.zIndex = -1;
+
+	}
+	$("#overview_id")[0].onclick = function() {
+		$("#overview_page_id")[0].style.zIndex = 10;
+		$("#overview_page_id")[0].style.opacity = 1;
+
+		$("#about_page_id")[0].style.zIndex = -1;
+		$("#about_page_id")[0].style.opacity = 0;
+	}
+	$("#about_id")[0].onclick = function() {
+		$("#about_page_id")[0].style.zIndex = 10;
+		$("#about_page_id")[0].style.opacity = 1;
+
+		$("#overview_page_id")[0].style.zIndex = -1;
+		$("#overview_page_id")[0].style.opacity = 0;
+	}
 });
 
 window.addEventListener("resize", function() {
