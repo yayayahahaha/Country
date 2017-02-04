@@ -159,25 +159,29 @@
 		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(22,160,133,0.8)" class="text_class" style="opacity: 1;" v-for="item in freq_ranking">Smoked Salmon</text>
 
 		<g>
-			<text x="7.524" y="41.510000000000005" fill="#E74C3C" font-size="1.5em" font-weight="bold">Mon-Ami-Gabi</text>
+			<text :x="svg_title.x" :y="svg_title.y" fill="#E74C3C" font-size="1.5em" font-weight="bold">{{svg_title.title}}</text>
 			<g>
-				<text x="232.72" y="568.35" fill="rgba(236,112,99,0.8)" id="t1">Top Score (avg)</text>
-				<circle cx="225.72" cy="563.35" fill="rgba(236,112,99,0.8)" r="5"></circle>
+				<text :x="svg_icon.com.x" :y="svg_icon.com.y" fill="rgba(236,112,99,0.8)" id="t1">Reranked</text>
+				<circle :cx="svg_icon.com.x - 7" :cy="svg_icon.com.y - 5" fill="rgba(236,112,99,0.8)" r="5"></circle>
 			</g>
 			<g>
-				<text x="452.72" y="568.35" fill="rgba(247,220,111,0.8)">Most Frequent Dishes</text>
-				<circle cx="445.72" cy="563.35" fill="rgba(247,220,111,0.8)" r="5"></circle>
+				<text :x="svg_icon.ori.x" :y="svg_icon.ori.y" fill="rgba(247,220,111,0.8)">Original</text>
+				<circle :cx="svg_icon.ori.x - 7" :cy="svg_icon.ori.y - 5" fill="rgba(247,220,111,0.8)" r="5"></circle>
 			</g>
 			<g>
-				<text x="232.72" y="593.35" fill="rgba(84,153,199,0.8)">Positive Sentiment Word</text>
-				<path d="M220.72 588.35 L230.72 588.35M225.72 583.35L225.72 593.35" stroke="rgba(84,153,199,0.8)" stroke-width="1"></path>
+				<text :x="svg_icon.rer.x" :y="svg_icon.rer.y" fill="rgba(22,160,133,0.8)">Frequence</text>
+				<circle :cx="svg_icon.rer.x - 7" :cy="svg_icon.rer.y - 5" fill="rgba(22,160,133,0.8)" r="5"></circle>
 			</g>
 			<g>
-				<text x="452.72" y="593.35" fill="rgba(22,160,133,0.8)">Top Score (min)</text>
-				<circle cx="445.72" cy="588.35" fill="rgba(22,160,133,0.8)" r="5"></circle>
+				<text :x="svg_icon.fre.x" :y="svg_icon.fre.y" fill="rgba(153,2,22,0.8)">Computed</text>
+				<circle :cx="svg_icon.fre.x - 7" :cy="svg_icon.fre.y - 5" fill="rgba(153,2,22,0.8)" r="5"></circle>
+			</g>
+			<g>
+				<text :x="svg_icon.cross.x" :y="svg_icon.cross.y" fill="rgba(84,153,199,0.8)">Positive Sentiment Word</text>
+				<path :d="svg_icon.cross.path" stroke="rgba(84,153,199,0.8)" stroke-width="1"></path>
 			</g>
 		</g>
-		
+
 	</svg>
 </div>
 </div>

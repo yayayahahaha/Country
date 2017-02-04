@@ -16,7 +16,35 @@ document.addEventListener("DOMContentLoaded", function() {
 			svg_height: parseInt(document.querySelector(".draw_place").offsetHeight) * 0.9,
 			svg_prepare: 0,
 			svg_axis_element: "",
-			svg_emo_array: []
+			svg_emo_array: [],
+			svg_title: {
+				title: "",
+				x: null,
+				y: null
+			},
+			svg_icon: {
+				com: {
+					x: null,
+					y: null
+				},
+				ori: {
+					x: null,
+					y: null
+				},
+				rer: {
+					x: null,
+					y: null
+				},
+				fre: {
+					x: null,
+					y: null
+				},
+				cross: {
+					x: null,
+					y: null,
+					path:""
+				}
+			}
 		},
 		watch: {
 			svg_width: function() {
@@ -104,12 +132,12 @@ document.addEventListener("DOMContentLoaded", function() {
 					svg_axis = [
 						[rightVue.svg_width / 2, 0],
 						[rightVue.svg_width, rightVue.svg_height * 0.8 / 2],
-						[rightVue.svg_width / 2, rightVue.svg_height*0.8],
-						[0, rightVue.svg_height*0.8 / 2]
+						[rightVue.svg_width / 2, rightVue.svg_height * 0.8],
+						[0, rightVue.svg_height * 0.8 / 2]
 					];
 					rightVue.svg_axis_element = "M" + svg_axis[0][0] + " " + svg_axis[0][1] + "L" + svg_axis[2][0] + " " + svg_axis[2][1] + "M" + svg_axis[3][0] + " " + svg_axis[3][1] + " L" + svg_axis[1][0] + " " + svg_axis[1][1];
 
-					draw_height = rightVue.svg_height*0.85;
+					draw_height = rightVue.svg_height * 0.85;
 
 					/* 情緒字 */
 					for (var i = 0; i < rightVue.svg_emo_array.length; i++) {
@@ -166,6 +194,32 @@ document.addEventListener("DOMContentLoaded", function() {
 						x4 = (x4 - min) / (max - min);
 						rightVue.freq_ranking[i].radius = x4;
 					}
+
+					/* 標題 */
+					rightVue.svg_title.title = countryName;
+					rightVue.svg_title.x = rightVue.svg_width / 12;
+					rightVue.svg_title.y = rightVue.svg_height / 12;
+
+					/* 圖例 */
+					rightVue.svg_icon.com.x = rightVue.svg_width / 20;
+					rightVue.svg_icon.com.y = rightVue.svg_height * 0.9;
+
+					rightVue.svg_icon.ori.x = rightVue.svg_width / 20;
+					rightVue.svg_icon.ori.y = rightVue.svg_height * 0.95;
+
+					rightVue.svg_icon.rer.x = rightVue.svg_width / 20;
+					rightVue.svg_icon.rer.y = rightVue.svg_height;
+
+					rightVue.svg_icon.fre.x = rightVue.svg_width / 2;
+					rightVue.svg_icon.fre.y = rightVue.svg_height * 0.9;
+
+					rightVue.svg_icon.cross.x = rightVue.svg_width / 2;
+					rightVue.svg_icon.cross.y = rightVue.svg_height * 0.95;
+					crossC = {};
+					crossC.x = rightVue.svg_icon.cross.x - 7;
+					crossC.y = rightVue.svg_icon.cross.y - 5;
+					rightVue.svg_icon.cross.path = "M"+crossC.x+" "+(crossC.y-s)+" L"+crossC.x+" "+(crossC.y+s)+"M"+(crossC.x-s)+" "+crossC.y+"L"+(crossC.x+s)+" "+crossC.y;
+
 				}
 			}
 		}
@@ -206,9 +260,9 @@ document.addEventListener("DOMContentLoaded", function() {
 							tmpArray.push(tmpName.split(".")[i].trim());
 						}
 						tmpName = tmpArray.join("_");
-						var countryName = tmpName;
+						countryName = tmpName;
 					} else {
-						var countryName = ($(event.target)[0].innerHTML).split(".")[1].split(",")[0].trim().split(" ").join("_");
+						countryName = ($(event.target)[0].innerHTML).split(".")[1].split(",")[0].trim().split(" ").join("_");
 					}
 					console.log(countryName);
 
@@ -216,7 +270,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				} catch (e) {
 					obj.setAttribute("class", "cBasic onfocus");
 
-					var countryName = (obj.innerHTML).split(".")[1].split(",")[0].trim().split(" ").join("_");
+					countryName = (obj.innerHTML).split(".")[1].split(",")[0].trim().split(" ").join("_");
 					console.log(countryName);
 				}
 				for (var i = 1; i <= 20; i++) {
