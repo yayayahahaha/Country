@@ -97,25 +97,75 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 			},
 			svg_size_change: function(resize) {
-				/* 如果被呼叫了兩次、也就是情緒字讀取完畢和挑出來的景點排序完畢後開始畫 */
+				/* 如果被呼叫了兩次、也就是情緒字讀取完畢和挑出來的景點排序完畢後開始畫, 或是resize 時也可以直接開始畫 */
 				rightVue.svg_prepare++;
 				if (rightVue.svg_prepare == 2 || resize == "resize") {
 					/* 座標軸 */
 					svg_axis = [
 						[rightVue.svg_width / 2, 0],
-						[rightVue.svg_width, rightVue.svg_height / 2],
-						[rightVue.svg_width / 2, rightVue.svg_height],
-						[0, rightVue.svg_height / 2]
+						[rightVue.svg_width, rightVue.svg_height * 0.8 / 2],
+						[rightVue.svg_width / 2, rightVue.svg_height*0.8],
+						[0, rightVue.svg_height*0.8 / 2]
 					];
 					rightVue.svg_axis_element = "M" + svg_axis[0][0] + " " + svg_axis[0][1] + "L" + svg_axis[2][0] + " " + svg_axis[2][1] + "M" + svg_axis[3][0] + " " + svg_axis[3][1] + " L" + svg_axis[1][0] + " " + svg_axis[1][1];
 
+					draw_height = rightVue.svg_height*0.85;
+
 					/* 情緒字 */
 					for (var i = 0; i < rightVue.svg_emo_array.length; i++) {
+						/* 正規劃 */
 						rightVue.svg_emo_array[i].afterV[0] = (rightVue.svg_emo_array[i].vector2[0] * (rightVue.svg_width / 2) / 100) + (rightVue.svg_width / 2);
-						rightVue.svg_emo_array[i].afterV[1] = (rightVue.svg_emo_array[i].vector2[1] * (rightVue.svg_height / 2) / 100) + (rightVue.svg_height / 2);
+						rightVue.svg_emo_array[i].afterV[1] = -((rightVue.svg_emo_array[i].vector2[1] * (draw_height / 2) / 100)) + (draw_height / 2);
+
+						/* 十字 */
+						s = 5;
+						rightVue.svg_emo_array[i].cross = "M" + rightVue.svg_emo_array[i].afterV[0] + " " + (rightVue.svg_emo_array[i].afterV[1] - s) + " L" + rightVue.svg_emo_array[i].afterV[0] + " " + (rightVue.svg_emo_array[i].afterV[1] + s) + "M" + (rightVue.svg_emo_array[i].afterV[0] - s) + " " + rightVue.svg_emo_array[i].afterV[1] + "L" + (rightVue.svg_emo_array[i].afterV[0] + s) + " " + rightVue.svg_emo_array[i].afterV[1] + "";
 					}
 
 
+					/* 景點 */
+					normalize = [];
+					for (var i = 0; i < 5; i++) {
+						rightVue.computed_ranking[i].afterV[0] = (rightVue.computed_ranking[i].vector2[0] * (rightVue.svg_width / 2) / 100) + (rightVue.svg_width / 2);
+						rightVue.computed_ranking[i].afterV[1] = -((rightVue.computed_ranking[i].vector2[1] * (draw_height / 2) / 100)) + (draw_height / 2);
+						normalize.push(rightVue.computed_ranking[i].total_attraction_name_mentioned_count);
+
+						rightVue.original_ranking[i].afterV[0] = (rightVue.original_ranking[i].vector2[0] * (rightVue.svg_width / 2) / 100) + (rightVue.svg_width / 2);
+						rightVue.original_ranking[i].afterV[1] = -((rightVue.original_ranking[i].vector2[1] * (draw_height / 2) / 100)) + (draw_height / 2);
+						normalize.push(rightVue.original_ranking[i].total_attraction_name_mentioned_count);
+
+						rightVue.reranked_ranking[i].afterV[0] = (rightVue.reranked_ranking[i].vector2[0] * (rightVue.svg_width / 2) / 100) + (rightVue.svg_width / 2);
+						rightVue.reranked_ranking[i].afterV[1] = -((rightVue.reranked_ranking[i].vector2[1] * (draw_height / 2) / 100)) + (draw_height / 2);
+						normalize.push(rightVue.reranked_ranking[i].total_attraction_name_mentioned_count);
+
+						rightVue.freq_ranking[i].afterV[0] = (rightVue.freq_ranking[i].vector2[0] * (rightVue.svg_width / 2) / 100) + (rightVue.svg_width / 2);
+						rightVue.freq_ranking[i].afterV[1] = -((rightVue.freq_ranking[i].vector2[1] * (draw_height / 2) / 100)) + (draw_height / 2);
+						normalize.push(rightVue.freq_ranking[i].total_attraction_name_mentioned_count);
+					}
+					normalize = normalize.sort(function(a, b) {
+						return b - a;
+					});
+
+					/* 正規畫底下景點半徑 */
+					max = normalize[0];
+					min = normalize[normalize.length - 1];
+					for (var i = 0; i < 5; i++) {
+						x1 = rightVue.computed_ranking[i].total_attraction_name_mentioned_count;
+						x1 = (x1 - min) / (max - min);
+						rightVue.computed_ranking[i].radius = x1;
+
+						x2 = rightVue.original_ranking[i].total_attraction_name_mentioned_count;
+						x2 = (x2 - min) / (max - min);
+						rightVue.original_ranking[i].radius = x2;
+
+						x3 = rightVue.reranked_ranking[i].total_attraction_name_mentioned_count;
+						x3 = (x3 - min) / (max - min);
+						rightVue.reranked_ranking[i].radius = x3;
+
+						x4 = rightVue.freq_ranking[i].total_attraction_name_mentioned_count;
+						x4 = (x4 - min) / (max - min);
+						rightVue.freq_ranking[i].radius = x4;
+					}
 				}
 			}
 		}
@@ -183,14 +233,8 @@ document.addEventListener("DOMContentLoaded", function() {
 						url: 'data/lexicon/' + countryName + ".json",
 					})
 					.done(function(res) {
-						/* 情緒字 */
 						for (var i = 0; i < res.length; i++) {
 							res[i].afterV = [];
-							res[i].afterV[0] = (res[i].vector2[0] * (rightVue.svg_width / 2) / 100) + (rightVue.svg_width / 2);
-							res[i].afterV[1] = (res[i].vector2[1] * (rightVue.svg_height / 2) / 100) + (rightVue.svg_height / 2);
-
-							s = 5;
-							res[i].cross = "M"+res[i].afterV[0]+" "+(res[i].afterV[1]-s)+" L"+res[i].afterV[0]+" "+(res[i].afterV[1]+s)+"M"+(res[i].afterV[0]-s)+" "+res[i].afterV[1]+"L"+(res[i].afterV[0]+s)+" "+res[i].afterV[1]+"";
 						}
 						rightVue.svg_emo_array = res;
 						rightVue.svg_size_change();
@@ -229,6 +273,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			});
 			for (var i = 0; i < 5; i++) {
 				computed_ranking.push(countryReviewList[i]);
+				computed_ranking[i].afterV = [];
 			}
 			rightVue.computed_ranking = computed_ranking;
 
@@ -237,6 +282,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			});
 			for (var i = 0; i < 5; i++) {
 				original_ranking.push(countryReviewList[i]);
+				original_ranking[i].afterV = [];
 			}
 			rightVue.original_ranking = original_ranking;
 
@@ -245,6 +291,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			});
 			for (var i = 0; i < 5; i++) {
 				reranked_ranking.push(countryReviewList[i]);
+				reranked_ranking[i].afterV = [];
 			}
 			rightVue.reranked_ranking = reranked_ranking;
 
@@ -253,6 +300,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			});
 			for (var i = 0; i < 5; i++) {
 				freq_ranking.push(countryReviewList[i]);
+				freq_ranking[i].afterV = [];
 			}
 			rightVue.freq_ranking = freq_ranking;
 

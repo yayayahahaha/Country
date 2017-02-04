@@ -138,6 +138,46 @@
 				<text :x="emo.afterV[0]" :y="emo.afterV[1]" fill="rgba(84,153,199,0.8)">{{emo.stemmed_word}}</text>
 			</g>
 		</g>
+
+		<!-- 景點 -->
+		<!-- computed -->
+		<circle :cx="item.afterV[0]" :cy="item.afterV[1]" :r="(item.radius+1) * 20" fill="rgba(153,2,22,0.8)" stroke="rgba(0,0,0,0.4)" stroke-width="1" class="dishes_hover" v-for="item in computed_ranking" ></circle>
+		<!-- origin -->
+		<circle :cx="item.afterV[0]" :cy="item.afterV[1]" :r="(item.radius+1) * 20" fill="rgba(247,220,111,0.8)" stroke="rgba(0,0,0,0.4)" stroke-width="1" class="dishes_hover" v-for="item in original_ranking" ></circle>
+		<!-- reranked -->
+		<circle :cx="item.afterV[0]" :cy="item.afterV[1]" :r="(item.radius+1) * 20" fill="rgba(236,112,99,0.8)" stroke="rgba(0,0,0,0.4)" stroke-width="1" class="dishes_hover" v-for="item in reranked_ranking" ></circle>
+		<!-- freq -->
+		<circle :cx="item.afterV[0]" :cy="item.afterV[1]" :r="(item.radius+1) * 20" fill="rgba(22,160,133,0.8)" stroke="rgba(0,0,0,0.4)" stroke-width="1" class="dishes_hover" v-for="item in freq_ranking" ></circle>
+
+		<!-- computed -->
+		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(153,2,22,0.8)" class="text_class" style="opacity: 1;" v-for="item in computed_ranking">Smoked Salmon</text>
+		<!-- origin -->
+		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(247,220,111,0.8)" class="text_class" style="opacity: 1;" v-for="item in original_ranking">Smoked Salmon</text>
+		<!-- reranked -->
+		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(236,112,99,0.8)" class="text_class" style="opacity: 1;" v-for="item in reranked_ranking">Smoked Salmon</text>
+		<!-- freq -->
+		<text :x="item.afterV[0]+10" :y="item.afterV[1]-10" stroke="rgba(0,0,0,0.4)" font-size="1.3em" font-weight="bold" stroke-width="0.3" fill="rgba(22,160,133,0.8)" class="text_class" style="opacity: 1;" v-for="item in freq_ranking">Smoked Salmon</text>
+
+		<g>
+			<text x="7.524" y="41.510000000000005" fill="#E74C3C" font-size="1.5em" font-weight="bold">Mon-Ami-Gabi</text>
+			<g>
+				<text x="232.72" y="568.35" fill="rgba(236,112,99,0.8)" id="t1">Top Score (avg)</text>
+				<circle cx="225.72" cy="563.35" fill="rgba(236,112,99,0.8)" r="5"></circle>
+			</g>
+			<g>
+				<text x="452.72" y="568.35" fill="rgba(247,220,111,0.8)">Most Frequent Dishes</text>
+				<circle cx="445.72" cy="563.35" fill="rgba(247,220,111,0.8)" r="5"></circle>
+			</g>
+			<g>
+				<text x="232.72" y="593.35" fill="rgba(84,153,199,0.8)">Positive Sentiment Word</text>
+				<path d="M220.72 588.35 L230.72 588.35M225.72 583.35L225.72 593.35" stroke="rgba(84,153,199,0.8)" stroke-width="1"></path>
+			</g>
+			<g>
+				<text x="452.72" y="593.35" fill="rgba(22,160,133,0.8)">Top Score (min)</text>
+				<circle cx="445.72" cy="588.35" fill="rgba(22,160,133,0.8)" r="5"></circle>
+			</g>
+		</g>
+		
 	</svg>
 </div>
 </div>
