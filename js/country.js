@@ -398,7 +398,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			rightVue.reranked_ranking = reranked_ranking;
 
 			countryReviewList = countryReviewList.sort(function(a, b) {
-				return b["freq_ranking"] - a["freq_ranking"];
+				return b["total_attraction_name_mentioned_count"] - a["total_attraction_name_mentioned_count"];
 			});
 			for (var i = 0; i < 5; i++) {
 				freq_ranking.push(countryReviewList[i]);
